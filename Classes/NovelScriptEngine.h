@@ -14,14 +14,21 @@
 #include "NovelScriptContexts/NovelScriptContext.h"
 #include "NovelScriptContexts/ScriptFuncType.h"
 
+#include "CCLuaEngine.h"
+#include "lua_module_register.h"
+
 class NovelScriptEngine {
 public:
+    NovelScriptEngine();
     void progress();
     
     void setScriptHandler(std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> handler);
-private:
+public:
+    cocos2d::LuaEngine* _engine;
     std::size_t _index;
     std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> _handler;
+    
+public:
     std::vector<std::vector<std::pair<ScriptFuncType, NovelScriptContext>>> _scriptOrders;
 };
 

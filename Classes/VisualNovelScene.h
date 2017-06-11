@@ -24,6 +24,8 @@ public:
 private:
     void scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context);
     
+    cocos2d::Node* _scene;
+    
     cocos2d::ui::Text* _nameText;
     cocos2d::ui::Text* _talkText;
     

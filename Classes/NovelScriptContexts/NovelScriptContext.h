@@ -14,13 +14,18 @@
 class NovelScriptContext {
 public:
     ~NovelScriptContext() = default;
-    libspiral::Any getContext() { return context; }
+    libspiral::Any getContext() { return _context; }
+    void setContext(const libspiral::Any& context) { _context = context; }
 private:
-    libspiral::Any context;
+    libspiral::Any _context;
 };
 
 struct NovelContext {
     std::string text;
+};
+
+struct NameContext {
+    std::string name;
 };
 
 #endif /* NovelScriptContext_h */

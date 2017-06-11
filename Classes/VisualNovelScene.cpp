@@ -8,6 +8,10 @@
 
 #include "VisualNovelScene.h"
 
+#include "NovelScriptContexts/NovelScriptContext.h"
+#include "ui/CocosGUI.h"
+#include "cocostudio/CocoStudio.h"
+
 using namespace cocos2d;
 
 bool VisualNovelScene::init() {
@@ -16,6 +20,7 @@ bool VisualNovelScene::init() {
     }
     
     
+    _scene = CSLoader::getInstance()->createNode("MainScene.csb");
     
     return true;
 }
@@ -26,6 +31,7 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
             _talkText->setString(libspiral::any_cast<NovelContext>(context.second.getContext()).text);
             break;
         case ScriptFuncType::SetName:
+            _nameText->setString(libspiral::any_cast<NameContext>(context.second.getContext()).name);
             break;
         case ScriptFuncType::PlaceCharacter:
             break;
