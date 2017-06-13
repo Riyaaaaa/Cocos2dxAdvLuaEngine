@@ -28,4 +28,10 @@ struct NameContext {
     std::string name;
 };
 
+struct CharacterContext {
+    int characterId;
+    int pictureId;
+    int faceId;
+};
+
 #endif /* NovelScriptContext_h */

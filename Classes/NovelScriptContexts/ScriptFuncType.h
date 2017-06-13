@@ -12,7 +12,9 @@
 enum class ScriptFuncType {
     Text,
     SetName,
-    PlaceCharacter
+    PlaceCharacter,
+    ReplaceFace,
+    Sleep
 };
 
 #endif /* ScriptFuncType_h */
