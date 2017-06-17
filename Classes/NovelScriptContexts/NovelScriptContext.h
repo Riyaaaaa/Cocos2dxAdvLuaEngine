@@ -14,7 +14,8 @@
 class NovelScriptContext {
 public:
     ~NovelScriptContext() = default;
-    libspiral::Any getContext() { return _context; }
+    libspiral::Any& getContext() { return _context; }
+    const libspiral::Any& getContext() const { return _context; }
     void setContext(const libspiral::Any& context) { _context = context; }
 private:
     libspiral::Any _context;
@@ -32,6 +33,12 @@ struct CharacterContext {
     int characterId;
     int pictureId;
     int faceId;
+};
+
+template<class ActionSet>
+struct ActionSetContext {
+    ActionSet* parent;
+    ActionSet set;
 };
 
 #endif /* NovelScriptContext_h */

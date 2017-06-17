@@ -25,11 +25,13 @@ public:
     void setScriptHandler(std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> handler);
 public:
     cocos2d::LuaEngine* _engine;
-    std::size_t _index;
     std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> _handler;
     
 public:
-    std::vector<std::vector<std::pair<ScriptFuncType, NovelScriptContext>>> _scriptOrders;
+    typedef std::vector<std::pair<ScriptFuncType, NovelScriptContext>> action_set_t;
+    action_set_t* _parentActionSet;
+    action_set_t* _currentActionSet;
+    action_set_t _routeActionSet;
 };
 
 #endif /* NovelScriptEngine_h */

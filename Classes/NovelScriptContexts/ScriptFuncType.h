@@ -14,7 +14,9 @@ enum class ScriptFuncType {
     SetName,
     PlaceCharacter,
     ReplaceFace,
-    Sleep
+    Sleep,
+    Spawn,
+    Sequence
 };
 
 #endif /* ScriptFuncType_h */

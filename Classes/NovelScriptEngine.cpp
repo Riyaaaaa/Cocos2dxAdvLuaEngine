@@ -25,7 +25,7 @@ static int setName(lua_State *L) {
     libspiral::Any any = data;
     context.setContext(any);
     
-    engine->_scriptOrders[engine->_index].push_back(std::make_pair(ScriptFuncType::SetName, context));
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::SetName, context));
     
     return 0;
 }
@@ -43,8 +43,10 @@ static int setText(lua_State *L) {
     libspiral::Any any = data;
     context.setContext(any);
     
-    engine->_scriptOrders[engine->_index].push_back(std::make_pair(ScriptFuncType::Text, context));
-    engine->_scriptOrders.push_back(std::vector<std::pair<ScriptFuncType, NovelScriptContext>>{});
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::Text, context));
+    
+    engine->_currentActionSet = engine->_parentActionSet;
+    engine->_parentActionSet = libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(engine->_parentActionSet).parent;
     
     return 0;
 }
@@ -66,7 +68,7 @@ static int placeCharacter(lua_State *L) {
     libspiral::Any any = data;
     context.setContext(any);
     
-    engine->_scriptOrders[engine->_index].push_back(std::make_pair(ScriptFuncType::PlaceCharacter, context));
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::PlaceCharacter, context));
     
     return 0;
 }
@@ -87,7 +89,7 @@ static int replaceFace(lua_State *L) {
     libspiral::Any any = data;
     context.setContext(any);
     
-    engine->_scriptOrders[engine->_index].push_back(std::make_pair(ScriptFuncType::ReplaceFace, context));
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::ReplaceFace, context));
     
     return 0;
 }
@@ -102,14 +104,54 @@ static int sleep(lua_State *L) {
     libspiral::Any any = mtime;
     context.setContext(any);
     
-    engine->_scriptOrders[engine->_index].push_back(std::make_pair(ScriptFuncType::Sleep, context));
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::Sleep, context));
     
     return 0;
 }
 
+static int spawnBegan(lua_State *L) {
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    NovelScriptContext context;
+    
+    ActionSetContext<NovelScriptEngine::action_set_t> data;
+    data.parent = engine->_currentActionSet;
+    data.set = NovelScriptEngine::action_set_t{};
+    
+    libspiral::Any any = data;
+    context.setContext(any);
+    
+    engine->_currentActionSet->push_back(std::make_pair(ScriptFuncType::Spawn, context));
+    engine->_parentActionSet = engine->_currentActionSet;
+    engine->_currentActionSet = &libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(&engine->_currentActionSet->back().second.getContext())->set;
+    
+    
+    return 0;
+}
+
+static int spawnEnd(lua_State *L) {
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->_currentActionSet = libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(engine->_currentActionSet).parent;
+    return 0;
+}
+
 NovelScriptEngine::NovelScriptEngine() {
-    _scriptOrders.resize(1);
-    _index = 0;
+    NovelScriptContext context;
+    
+    ActionSetContext<NovelScriptEngine::action_set_t> data;
+    data.parent = nullptr;
+    data.set = NovelScriptEngine::action_set_t{};
+    
+    libspiral::Any any = data;
+    context.setContext(any);
+    
+    _routeActionSet.push_back(std::make_pair(ScriptFuncType::Spawn, context));
+    
+    _currentActionSet =
+    _parentActionSet = nullptr; // route
     
     _engine = LuaEngine::getInstance();
     ScriptEngineManager::getInstance()->setScriptEngine(_engine);
@@ -125,6 +167,8 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "_C", &placeCharacter);
     tolua_function(tolua_S, "_R", &replaceFace);
     tolua_function(tolua_S, "_S", &sleep);
+    tolua_function(tolua_S, "_S", &spawnBegan);
+    tolua_function(tolua_S, "_S", &spawnEnd);
     
     tolua_endmodule(tolua_S);
     
@@ -135,8 +179,7 @@ NovelScriptEngine::NovelScriptEngine() {
 }
 
 void NovelScriptEngine::progress() {
-    _index++;
-    for (auto && order :  _scriptOrders[_index]) {
+    for (auto && order :  _routeActionSet) {
         _handler(order);
     }
 }
