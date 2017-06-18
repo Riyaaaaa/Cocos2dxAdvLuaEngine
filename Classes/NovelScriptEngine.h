@@ -20,9 +20,12 @@
 class NovelScriptEngine {
 public:
     NovelScriptEngine();
+    
+    void run();
+    
     void progress();
     
-    void setScriptHandler(std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> handler);
+    void setScriptHandler(std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> handler) { _handler = handler; }
 public:
     typedef std::pair<ScriptFuncType, NovelScriptContext> action_t;
     typedef std::vector<action_t> action_set_t;
@@ -33,6 +36,7 @@ public:
     void addAction(const action_t& action);
     
 public:
+    int index;
     action_set_t* _parentActionSet;
     action_set_t* _currentActionSet;
     action_set_t _routeActionSet;

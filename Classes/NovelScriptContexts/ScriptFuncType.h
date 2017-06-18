@@ -10,13 +10,15 @@
 #define ScriptFuncType_h
 
 enum class ScriptFuncType {
+    Start,
     Text,
     SetName,
     PlaceCharacter,
     ReplaceFace,
     Sleep,
     Spawn,
-    Sequence
+    Sequence,
+    End
 };
 
 #endif /* ScriptFuncType_h */

@@ -20,14 +20,16 @@ public:
     CREATE_FUNC(VisualNovelScene);
     bool init() override;
     
-    
 private:
+    void onEnter() override;
     void scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context);
     
     cocos2d::Node* _scene;
     
     cocos2d::ui::Text* _nameText;
     cocos2d::ui::Text* _talkText;
+    
+    cocos2d::Node* _characterAnchors[3];
     
     NovelScriptEngine _engine;
 };
