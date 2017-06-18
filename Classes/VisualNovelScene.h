@@ -30,6 +30,7 @@ private:
     cocos2d::ui::Text* _nameText;
     cocos2d::ui::Text* _talkText;
     
+    cocos2d::Sprite* _bg;
     cocos2d::Node* _characterAnchors[3];
     
     cocos2d::Sprite* _cursor;

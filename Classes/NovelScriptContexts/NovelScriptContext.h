@@ -33,6 +33,7 @@ struct CharacterContext {
     int characterId;
     int pictureId;
     int faceId;
+    int position;
 };
 
 template<class ActionSet>

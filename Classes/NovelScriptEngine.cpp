@@ -50,6 +50,7 @@ static int placeCharacter(lua_State *L) {
     int charaId = lua_tonumber(L, 1);
     int pictureId = lua_tonumber(L, 2);
     int faceId = lua_tonumber(L, 3);
+    int position = lua_tonumber(L, 4);
     
     lua_getglobal(L, "_instance");
     NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
@@ -58,6 +59,7 @@ static int placeCharacter(lua_State *L) {
     data.characterId = charaId;
     data.pictureId = pictureId;
     data.faceId = faceId;
+    data.position = position;
     
     engine->addAction(createAction(ScriptFuncType::PlaceCharacter, data));
     

@@ -6,7 +6,7 @@
       <ObjectData Name="Scene" Tag="3" ctype="GameNodeObjectData">
         <Size X="1136.0000" Y="640.0000" />
         <Children>
-          <AbstractNodeData Name="bg_1" ActionTag="227532174" Tag="11" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" ctype="SpriteObjectData">
+          <AbstractNodeData Name="bg" ActionTag="227532174" Tag="11" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" ctype="SpriteObjectData">
             <Size X="1136.0000" Y="640.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
             <Position X="568.0000" Y="320.0000" />
@@ -82,31 +82,31 @@
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="LeftAnchor" ActionTag="637748779" Tag="7" IconVisible="True" LeftMargin="66.3956" RightMargin="1069.6044" TopMargin="212.7559" BottomMargin="427.2441" ctype="SingleNodeObjectData">
+          <AbstractNodeData Name="LeftAnchor" ActionTag="637748779" Tag="7" IconVisible="True" LeftMargin="122.8592" RightMargin="1013.1408" TopMargin="320.8665" BottomMargin="319.1335" ctype="SingleNodeObjectData">
             <Size X="0.0000" Y="0.0000" />
             <AnchorPoint />
-            <Position X="66.3956" Y="427.2441" />
+            <Position X="122.8592" Y="319.1335" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.0584" Y="0.6676" />
+            <PrePosition X="0.1082" Y="0.4986" />
             <PreSize X="0.0000" Y="0.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="CenterAnchor" ActionTag="-71837660" Tag="8" IconVisible="True" LeftMargin="455.9611" RightMargin="680.0389" TopMargin="196.5247" BottomMargin="443.4753" ctype="SingleNodeObjectData">
+          <AbstractNodeData Name="CenterAnchor" ActionTag="-71837660" Tag="8" IconVisible="True" LeftMargin="508.0481" RightMargin="627.9519" TopMargin="310.8277" BottomMargin="329.1723" ctype="SingleNodeObjectData">
             <Size X="0.0000" Y="0.0000" />
             <AnchorPoint />
-            <Position X="455.9611" Y="443.4753" />
+            <Position X="508.0481" Y="329.1723" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.4014" Y="0.6929" />
+            <PrePosition X="0.4472" Y="0.5143" />
             <PreSize X="0.0000" Y="0.0000" />
           </AbstractNodeData>
-          <AbstractNodeData Name="RightAnchor" ActionTag="-925774087" Tag="9" IconVisible="True" LeftMargin="840.8884" RightMargin="295.1116" TopMargin="189.5675" BottomMargin="450.4325" ctype="SingleNodeObjectData">
+          <AbstractNodeData Name="RightAnchor" ActionTag="-925774087" Tag="9" IconVisible="True" LeftMargin="917.9846" RightMargin="218.0154" TopMargin="312.1941" BottomMargin="327.8059" ctype="SingleNodeObjectData">
             <Size X="0.0000" Y="0.0000" />
             <AnchorPoint />
-            <Position X="840.8884" Y="450.4325" />
+            <Position X="917.9846" Y="327.8059" />
             <Scale ScaleX="1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.7402" Y="0.7038" />
+            <PrePosition X="0.8081" Y="0.5122" />
             <PreSize X="0.0000" Y="0.0000" />
           </AbstractNodeData>
         </Children>

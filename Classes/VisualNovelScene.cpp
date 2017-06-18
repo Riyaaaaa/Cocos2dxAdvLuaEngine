@@ -24,6 +24,8 @@ bool VisualNovelScene::init() {
     _scene = CSLoader::getInstance()->createNode("VisualNovelScene.csb");
     addChild(_scene);
     
+    _bg = _scene->getChildByName<Sprite*>("bg");
+    
     _talkText = _scene->getChildByName("TalkWindow")->getChildByName<ui::Text*>("TalkText");
     _nameText = _scene->getChildByName("NameWindow")->getChildByName<ui::Text*>("NameText");
     
@@ -72,9 +74,19 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
             _nameText->setString(libspiral::any_cast<NameContext>(context.second.getContext()).name);
             _engine.progress();
             break;
-        case ScriptFuncType::PlaceCharacter:
+        case ScriptFuncType::PlaceCharacter: {
+            CharacterContext data = libspiral::any_cast<CharacterContext>(context.second.getContext());
+            
+            auto string = StringUtils::format("Characters/%02d/%02d_%02d.png", data.characterId, data.pictureId, data.faceId);
+            auto sprite = Sprite::create(string);
+            _bg->addChild(sprite);
+            
+            sprite->setPosition(_characterAnchors[data.position]->getPosition());
+            sprite->setScale(0.7f);
+            
             _engine.progress();
             break;
+        }
         case ScriptFuncType::End:
             break;
         default:
