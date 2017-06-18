@@ -23,6 +23,7 @@ public:
 private:
     void onEnter() override;
     void scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context);
+    //void onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
     
     cocos2d::Node* _scene;
     
@@ -31,7 +32,12 @@ private:
     
     cocos2d::Node* _characterAnchors[3];
     
+    cocos2d::Sprite* _cursor;
+    
     NovelScriptEngine _engine;
+    
+    bool _isAuto;
+    bool _waitProgress;
 };
 
 

@@ -9,6 +9,11 @@
 #ifndef NovelTextUtils_h
 #define NovelTextUtils_h
 
-#include <stdio.h>
+#include "ui/CocosGUI.h"
+#include "cocos2d.h"
+
+namespace NovelTextUtils {
+    void runCaption(cocos2d::ui::Text* text, float duration, std::function<void()> endCallback = nullptr);
+}
 
 #endif /* NovelTextUtils_h */

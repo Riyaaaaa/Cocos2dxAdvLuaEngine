@@ -1,5 +1,5 @@
 _N("aaa");
-_T("bbb");
+_T("bbbbbbbbbbbbbbbbbbb");
 _C(1, 2, 3);
 _R(1, 2);
 SpawnS();
@@ -7,4 +7,4 @@ _C(1, 2, 3);
 _C(1, 2, 3);
 _C(1, 2, 3);
 SpawnE();
-_T("ccc");
+_T("cccxxxxxxxxxxxxxxx");

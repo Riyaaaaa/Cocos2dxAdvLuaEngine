@@ -12,6 +12,8 @@
 #include "ui/CocosGUI.h"
 #include "cocostudio/CocoStudio.h"
 
+#include "Utility/NovelTextUtils.h"
+
 using namespace cocos2d;
 
 bool VisualNovelScene::init() {
@@ -29,7 +31,24 @@ bool VisualNovelScene::init() {
     _characterAnchors[1] = _scene->getChildByName("CenterAnchor");
     _characterAnchors[2] = _scene->getChildByName("RightAnchor");
     
+    _cursor = _scene->getChildByName("TalkWindow")->getChildByName<Sprite*>("Cursor");
+    
     _engine.setScriptHandler(CC_CALLBACK_1(VisualNovelScene::scriptHandler, this));
+    
+    _isAuto = false;
+    _waitProgress = false;
+    
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = [this](Touch*, Event*){
+        if (_waitProgress) {
+            _engine.progress();
+            _waitProgress = false;
+        }
+        
+        return true;
+    };
+    
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
     return true;
 }
@@ -38,7 +57,16 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
     switch (context.first) {
         case ScriptFuncType::Text:
             _talkText->setString(libspiral::any_cast<NovelContext>(context.second.getContext()).text);
-            this->runAction(Sequence::create(DelayTime::create(3.0f), CallFunc::create([this](){ _engine.progress(); }), NULL));
+            NovelTextUtils::runCaption(_talkText, 0.1, [this](){
+                if (_isAuto) {
+                    _engine.progress();
+                } else {
+                    _cursor->setVisible(true);
+                    auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)), MoveBy::create(0.3f, Vec2(0, 10)), NULL));
+                    _cursor->runAction(act);
+                    _waitProgress = true;
+                }
+            });
             break;
         case ScriptFuncType::SetName:
             _nameText->setString(libspiral::any_cast<NameContext>(context.second.getContext()).name);

@@ -3,7 +3,33 @@
   <SolutionFolder>
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
+        <Folder Name="fonts">
+          <Folder Name="PixelMplus">
+            <Folder Name="mplus_bitmap_fonts">
+              <File Name="LICENSE_E" />
+              <File Name="LICENSE_J" />
+              <File Name="README_E" />
+              <File Name="README_J" />
+            </Folder>
+            <TTF Name="PixelMplus10-Bold.ttf" />
+            <File Name="README.txt" />
+          </Folder>
+        </Folder>
+        <Folder Name="PixelMplus">
+          <Folder Name="mplus_bitmap_fonts">
+            <File Name="LICENSE_E" />
+            <File Name="LICENSE_J" />
+            <File Name="README_E" />
+            <File Name="README_J" />
+          </Folder>
+          <TTF Name="PixelMplus10-Bold.ttf" />
+          <TTF Name="PixelMplus10-Regular.ttf" />
+          <TTF Name="PixelMplus12-Bold.ttf" />
+          <TTF Name="PixelMplus12-Regular.ttf" />
+          <File Name="README.txt" />
+        </Folder>
         <Image Name="bg.png" />
+        <Image Name="cursorl.png" />
         <Image Name="HelloWorld.png" />
         <Project Name="MainScene.csd" Type="Scene" />
         <Project Name="VisualNovelScene.csd" Type="Scene" />
