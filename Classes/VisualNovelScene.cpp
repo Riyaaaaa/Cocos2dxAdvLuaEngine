@@ -128,6 +128,11 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
         }
         case ScriptFuncType::End:
             break;
+        case ScriptFuncType::Sleep:
+            auto duration = libspiral::any_cast<float>(context.second.getContext());
+            this->runAction(Sequence::create(DelayTime::create(duration),
+                                             CallFunc::create([this](){ _engine.progress(); }));
+            break;
         default:
             _engine.progress();
             break;
