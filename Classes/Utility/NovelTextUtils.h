@@ -14,6 +14,7 @@
 
 namespace NovelTextUtils {
     void runCaption(cocos2d::ui::Text* text, float duration, std::function<void()> endCallback = nullptr);
+    void clearTextAnimation(cocos2d::ui::Text* text);
 }
 
 #endif /* NovelTextUtils_h */

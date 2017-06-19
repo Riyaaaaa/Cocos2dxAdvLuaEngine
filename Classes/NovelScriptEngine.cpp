@@ -111,7 +111,6 @@ static int seqBegan(lua_State *L) {
     engine->_parentActionSet = engine->_currentActionSet;
     engine->_currentActionSet = &libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(&engine->_currentActionSet->back().second.getContext())->set;
     
-    
     return 0;
 }
 
@@ -135,7 +134,6 @@ static int spawnBegan(lua_State *L) {
     engine->addAction(createAction(ScriptFuncType::Spawn, data));
     engine->_parentActionSet = engine->_currentActionSet;
     engine->_currentActionSet = &libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(&engine->_currentActionSet->back().second.getContext())->set;
-    
     
     return 0;
 }

@@ -25,6 +25,10 @@ private:
     void scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context);
     //void onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
     
+    float getDurationScriptFuncType(ScriptFuncType funcType);
+    
+    void activeTextCursor();
+    
     cocos2d::Node* _scene;
     
     cocos2d::ui::Text* _nameText;
@@ -37,8 +41,10 @@ private:
     
     NovelScriptEngine _engine;
     
+    std::function<void()> _touchHandler;
+    
     bool _isAuto;
-    bool _waitProgress;
+    bool _waitProgress;    
 };
 
 

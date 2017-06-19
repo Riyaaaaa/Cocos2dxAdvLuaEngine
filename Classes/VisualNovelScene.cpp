@@ -13,6 +13,7 @@
 #include "cocostudio/CocoStudio.h"
 
 #include "Utility/NovelTextUtils.h"
+#include "Utility/SpriteUtils.h"
 
 using namespace cocos2d;
 
@@ -47,6 +48,10 @@ bool VisualNovelScene::init() {
             _waitProgress = false;
         }
         
+        if (_touchHandler) {
+            _touchHandler();
+        }
+        
         return true;
     };
     
@@ -55,21 +60,47 @@ bool VisualNovelScene::init() {
     return true;
 }
 
+float VisualNovelScene::getDurationScriptFuncType(ScriptFuncType funcType) {
+    switch (funcType) {
+        case ScriptFuncType::PlaceCharacter:
+            return 0.2f;
+            break;
+        default:
+            break;
+    }
+    
+    return 0.0f;
+}
+
+void VisualNovelScene::activeTextCursor() {
+    _cursor->setVisible(true);
+    auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)),
+                                                      MoveBy::create(0.3f, Vec2(0, 10)), nullptr));
+    _cursor->runAction(act);
+    _waitProgress = true;
+}
+
 void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context) {
     switch (context.first) {
-        case ScriptFuncType::Text:
-            _talkText->setString(libspiral::any_cast<NovelContext>(context.second.getContext()).text);
+        case ScriptFuncType::Text: {
+            auto text = libspiral::any_cast<NovelContext>(context.second.getContext()).text;
+            _talkText->setString(text);
             NovelTextUtils::runCaption(_talkText, 0.1, [this](){
                 if (_isAuto) {
                     _engine.progress();
                 } else {
-                    _cursor->setVisible(true);
-                    auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)), MoveBy::create(0.3f, Vec2(0, 10)), NULL));
-                    _cursor->runAction(act);
-                    _waitProgress = true;
+                    this->activeTextCursor();
                 }
+                _touchHandler = nullptr;
             });
+            _touchHandler = [this, text]() {
+                NovelTextUtils::clearTextAnimation(_talkText);
+                _talkText->setString(text);
+                this->activeTextCursor();
+                _touchHandler = nullptr;
+            };
             break;
+        }
         case ScriptFuncType::SetName:
             _nameText->setString(libspiral::any_cast<NameContext>(context.second.getContext()).name);
             _engine.progress();
@@ -84,7 +115,9 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
             sprite->setPosition(_characterAnchors[data.position]->getPosition());
             sprite->setScale(0.7f);
             
-            _engine.progress();
+            SpriteUtils::fadeIn(sprite, getDurationScriptFuncType(context.first),
+                                [this](){ _engine.progress(); });
+            
             break;
         }
         case ScriptFuncType::End:
