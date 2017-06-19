@@ -128,11 +128,34 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
         }
         case ScriptFuncType::End:
             break;
-        case ScriptFuncType::Sleep:
+        case ScriptFuncType::Sleep: {
             auto duration = libspiral::any_cast<float>(context.second.getContext());
             this->runAction(Sequence::create(DelayTime::create(duration),
-                                             CallFunc::create([this](){ _engine.progress(); }));
+                                             CallFunc::create([this](){ _engine.progress(); }),
+                                             nullptr));
             break;
+        }
+        case ScriptFuncType::Spawn: {
+            auto action_set = libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(context.second.getContext());
+            
+            auto it = std::max_element(action_set.set.begin(),
+                                       action_set.set.end(),
+                                       [this](const NovelScriptEngine::action_t& lhs,
+                                          const NovelScriptEngine::action_t& rhs){
+                                           return getDurationScriptFuncType(lhs.first) < getDurationScriptFuncType(rhs.first);
+                                       });
+            
+            this->runAction(Sequence::create(DelayTime::create(getDurationScriptFuncType(it->first)),
+                                             CallFunc::create([this](){ _engine.progress(); }),
+                                             nullptr));
+            
+            // TODO: Do not run progress on child action
+            for (auto && action : action_set.set) {
+                scriptHandler(action);
+            }
+            
+            break;
+        }
         default:
             _engine.progress();
             break;
