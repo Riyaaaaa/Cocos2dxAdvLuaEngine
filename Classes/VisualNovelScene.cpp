@@ -46,6 +46,7 @@ bool VisualNovelScene::init() {
         if (_waitProgress) {
             _engine.progress();
             _waitProgress = false;
+            this->enableTextCursor(false);
         }
         
         if (_touchHandler) {
@@ -72,12 +73,17 @@ float VisualNovelScene::getDurationScriptFuncType(ScriptFuncType funcType) {
     return 0.0f;
 }
 
-void VisualNovelScene::activeTextCursor() {
-    _cursor->setVisible(true);
-    auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)),
+void VisualNovelScene::enableTextCursor(bool enable) {
+    if (enable) {
+        _cursor->setVisible(true);
+        auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)),
                                                       MoveBy::create(0.3f, Vec2(0, 10)), nullptr));
-    _cursor->runAction(act);
-    _waitProgress = true;
+        _cursor->runAction(act);
+        _waitProgress = true;
+    } else {
+        _cursor->setVisible(false);
+        _cursor->stopAllActions();
+    }
 }
 
 void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context) {
@@ -89,14 +95,14 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
                 if (_isAuto) {
                     _engine.progress();
                 } else {
-                    this->activeTextCursor();
+                    this->enableTextCursor(true);
                 }
                 _touchHandler = nullptr;
             });
             _touchHandler = [this, text]() {
                 NovelTextUtils::clearTextAnimation(_talkText);
                 _talkText->setString(text);
-                this->activeTextCursor();
+                this->enableTextCursor(true);
                 _touchHandler = nullptr;
             };
             break;

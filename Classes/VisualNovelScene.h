@@ -27,7 +27,7 @@ private:
     
     float getDurationScriptFuncType(ScriptFuncType funcType);
     
-    void activeTextCursor();
+    void enableTextCursor(bool enable);
     
     cocos2d::Node* _scene;
     
