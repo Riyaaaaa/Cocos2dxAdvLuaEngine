@@ -135,6 +135,12 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
                                              nullptr));
             break;
         }
+        case ScriptFuncType::SetBg: {
+            int bgId = libspiral::any_cast<int>(context.second.getContext());
+            _bg->setTexture(StringUtils::format("Bg/%02d.png", bgId));
+            _engine.progress();
+            break;
+        }
         case ScriptFuncType::Spawn: {
             auto action_set = libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(context.second.getContext());
             

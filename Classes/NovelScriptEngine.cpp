@@ -147,6 +147,17 @@ static int spawnEnd(lua_State *L) {
     return 0;
 }
 
+static int setBG(lua_State *L) {
+    int bgId = lua_tonumber(L, 1);
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::SetBg, bgId));
+    
+    return 0;
+}
+
 NovelScriptEngine::NovelScriptEngine() { 
     index = 0;
     
@@ -172,6 +183,7 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "SpawnE", &spawnEnd);
     tolua_function(tolua_S, "SeqS", &seqBegan);
     tolua_function(tolua_S, "SeqE", &seqEnd);
+    tolua_function(tolua_S, "_BG", &setBG);
     
     tolua_endmodule(tolua_S);
     
