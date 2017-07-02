@@ -191,8 +191,8 @@ NovelScriptEngine::NovelScriptEngine() {
     lua_setglobal(tolua_S, "_instance");
 }
 
-void NovelScriptEngine::run() {
-    _engine->executeScriptFile("test.lua");
+void NovelScriptEngine::run(std::string filename) {
+    _engine->executeScriptFile(filename.c_str());
 }
 
 void NovelScriptEngine::progress() {

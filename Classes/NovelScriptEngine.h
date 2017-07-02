@@ -21,8 +21,7 @@ class NovelScriptEngine {
 public:
     NovelScriptEngine();
     
-    void run();
-    
+    void run(std::string filename);
     void progress();
     
     void setScriptHandler(std::function<void(std::pair<ScriptFuncType, NovelScriptContext>)> handler) { _handler = handler; }

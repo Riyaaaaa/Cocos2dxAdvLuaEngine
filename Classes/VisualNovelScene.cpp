@@ -17,13 +17,26 @@
 
 using namespace cocos2d;
 
-bool VisualNovelScene::init() {
+VisualNovelScene* VisualNovelScene::createScene(std::string filename) {
+    VisualNovelScene* scene = new VisualNovelScene;
+    if (scene && scene->init(filename)) {
+        scene->autorelease();
+        return scene;
+    }
+    
+    delete scene;
+    return nullptr;
+}
+
+bool VisualNovelScene::init(std::string filename) {
     if (!Scene::init()) {
         return false;
     }
     
     _scene = CSLoader::getInstance()->createNode("VisualNovelScene.csb");
     addChild(_scene);
+    
+    _luaFileName = filename;
     
     _bg = _scene->getChildByName<Sprite*>("bg");
     
@@ -170,7 +183,7 @@ void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContex
 
 void VisualNovelScene::onEnter() {
     Scene::onEnter();
-    _engine.run();
+    _engine.run(_luaFileName);
     _engine.progress();
 }
 

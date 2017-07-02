@@ -17,8 +17,8 @@
 
 class VisualNovelScene : public cocos2d::Scene {
 public:
-    CREATE_FUNC(VisualNovelScene);
-    bool init() override;
+    VisualNovelScene* createScene(std::string filename);
+    bool init(std::string filename);
     
 private:
     void onEnter() override;
@@ -40,6 +40,7 @@ private:
     cocos2d::Sprite* _cursor;
     
     NovelScriptEngine _engine;
+    std::string _luaFileName;
     
     std::function<void()> _touchHandler;
     
