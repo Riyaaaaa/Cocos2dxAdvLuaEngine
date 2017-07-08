@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "VisualNovelScene.h"
+#include "NovelViewController.h"
 
 USING_NS_CC;
 
@@ -42,11 +42,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils::getInstance()->addSearchPath("res");
 
     // create a scene. it's an autorelease object
-    auto scene = VisualNovelScene::create();
-
-    // run
-    director->runWithScene(scene);
-
+    NovelViewController controller;
+    controller.runScene("test.lua");
+    
     return true;
 }
 

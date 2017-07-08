@@ -17,9 +17,9 @@
 
 using namespace cocos2d;
 
-VisualNovelScene* VisualNovelScene::createScene(std::string filename) {
+VisualNovelScene* VisualNovelScene::createScene() {
     VisualNovelScene* scene = new VisualNovelScene;
-    if (scene && scene->init(filename)) {
+    if (scene && scene->init()) {
         scene->autorelease();
         return scene;
     }
@@ -28,15 +28,13 @@ VisualNovelScene* VisualNovelScene::createScene(std::string filename) {
     return nullptr;
 }
 
-bool VisualNovelScene::init(std::string filename) {
+bool VisualNovelScene::init() {
     if (!Scene::init()) {
         return false;
     }
     
     _scene = CSLoader::getInstance()->createNode("VisualNovelScene.csb");
     addChild(_scene);
-    
-    _luaFileName = filename;
     
     _bg = _scene->getChildByName<Sprite*>("bg");
     
@@ -49,141 +47,21 @@ bool VisualNovelScene::init(std::string filename) {
     
     _cursor = _scene->getChildByName("TalkWindow")->getChildByName<Sprite*>("Cursor");
     
-    _engine.setScriptHandler(CC_CALLBACK_1(VisualNovelScene::scriptHandler, this));
-    
-    _isAuto = false;
-    _waitProgress = false;
-    
     auto listener = EventListenerTouchOneByOne::create();
-    listener->onTouchBegan = [this](Touch*, Event*){
-        if (_waitProgress) {
-            _engine.progress();
-            _waitProgress = false;
-            this->enableTextCursor(false);
-        }
-        
-        if (_touchHandler) {
-            _touchHandler();
+    listener->onTouchBegan = [this](Touch* t, Event* e){
+        if (_onTouchBegan) {
+            _onTouchBegan(t, e);
         }
         
         return true;
     };
-    
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
     return true;
 }
 
-float VisualNovelScene::getDurationScriptFuncType(ScriptFuncType funcType) {
-    switch (funcType) {
-        case ScriptFuncType::PlaceCharacter:
-            return 0.2f;
-            break;
-        default:
-            break;
-    }
-    
-    return 0.0f;
-}
-
-void VisualNovelScene::enableTextCursor(bool enable) {
-    if (enable) {
-        _cursor->setVisible(true);
-        auto act = RepeatForever::create(Sequence::create(MoveBy::create(0.3f, Vec2(0, -10)),
-                                                      MoveBy::create(0.3f, Vec2(0, 10)), nullptr));
-        _cursor->runAction(act);
-        _waitProgress = true;
-    } else {
-        _cursor->setVisible(false);
-        _cursor->stopAllActions();
-    }
-}
-
-void VisualNovelScene::scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context) {
-    switch (context.first) {
-        case ScriptFuncType::Text: {
-            auto text = libspiral::any_cast<NovelContext>(context.second.getContext()).text;
-            _talkText->setString(text);
-            NovelTextUtils::runCaption(_talkText, 0.1, [this](){
-                if (_isAuto) {
-                    _engine.progress();
-                } else {
-                    this->enableTextCursor(true);
-                }
-                _touchHandler = nullptr;
-            });
-            _touchHandler = [this, text]() {
-                NovelTextUtils::clearTextAnimation(_talkText);
-                _talkText->setString(text);
-                this->enableTextCursor(true);
-                _touchHandler = nullptr;
-            };
-            break;
-        }
-        case ScriptFuncType::SetName:
-            _nameText->setString(libspiral::any_cast<NameContext>(context.second.getContext()).name);
-            _engine.progress();
-            break;
-        case ScriptFuncType::PlaceCharacter: {
-            CharacterContext data = libspiral::any_cast<CharacterContext>(context.second.getContext());
-            
-            auto string = StringUtils::format("Characters/%02d/%02d_%02d.png", data.characterId, data.pictureId, data.faceId);
-            auto sprite = Sprite::create(string);
-            _bg->addChild(sprite);
-            
-            sprite->setPosition(_characterAnchors[data.position]->getPosition());
-            sprite->setScale(0.7f);
-            
-            SpriteUtils::fadeIn(sprite, getDurationScriptFuncType(context.first),
-                                [this](){ _engine.progress(); });
-            
-            break;
-        }
-        case ScriptFuncType::End:
-            break;
-        case ScriptFuncType::Sleep: {
-            auto duration = libspiral::any_cast<float>(context.second.getContext());
-            this->runAction(Sequence::create(DelayTime::create(duration),
-                                             CallFunc::create([this](){ _engine.progress(); }),
-                                             nullptr));
-            break;
-        }
-        case ScriptFuncType::SetBg: {
-            int bgId = libspiral::any_cast<int>(context.second.getContext());
-            _bg->setTexture(StringUtils::format("Bg/%02d.png", bgId));
-            _engine.progress();
-            break;
-        }
-        case ScriptFuncType::Spawn: {
-            auto action_set = libspiral::any_cast<ActionSetContext<NovelScriptEngine::action_set_t>>(context.second.getContext());
-            
-            auto it = std::max_element(action_set.set.begin(),
-                                       action_set.set.end(),
-                                       [this](const NovelScriptEngine::action_t& lhs,
-                                          const NovelScriptEngine::action_t& rhs){
-                                           return getDurationScriptFuncType(lhs.first) < getDurationScriptFuncType(rhs.first);
-                                       });
-            
-            this->runAction(Sequence::create(DelayTime::create(getDurationScriptFuncType(it->first)),
-                                             CallFunc::create([this](){ _engine.progress(); }),
-                                             nullptr));
-            
-            // TODO: Do not run progress on child action
-            for (auto && action : action_set.set) {
-                scriptHandler(action);
-            }
-            
-            break;
-        }
-        default:
-            _engine.progress();
-            break;
-    }
-}
-
 void VisualNovelScene::onEnter() {
     Scene::onEnter();
-    _engine.run(_luaFileName);
-    _engine.progress();
+    _eventCallback(ViewEventType::Enter);
 }
 

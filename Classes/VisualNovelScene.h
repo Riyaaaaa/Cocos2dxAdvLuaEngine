@@ -10,6 +10,7 @@
 #define VisualNovelScene_h
 
 #include "NovelScriptEngine.h"
+#include "View/ViewEventType.h"
 
 #include "ui/CocosGUI.h"
 
@@ -17,35 +18,27 @@
 
 class VisualNovelScene : public cocos2d::Scene {
 public:
-    VisualNovelScene* createScene(std::string filename);
-    bool init(std::string filename);
+    static VisualNovelScene* createScene();
+    bool init() override;
     
 private:
     void onEnter() override;
-    void scriptHandler(std::pair<ScriptFuncType, NovelScriptContext> context);
-    //void onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
     
-    float getDurationScriptFuncType(ScriptFuncType funcType);
+    CC_SYNTHESIZE(std::function<void(ViewEventType)>, _eventCallback, EventCallBack);
     
-    void enableTextCursor(bool enable);
+    CC_SYNTHESIZE(std::function<void(cocos2d::Touch*, cocos2d::Event*)>, _onTouchBegan, TouchCallback);
+    
+    CC_SYNTHESIZE_READONLY(cocos2d::ui::Text*, _nameText, NameText);
+    CC_SYNTHESIZE_READONLY(cocos2d::ui::Text*, _talkText, TalkText);
+    
+    CC_SYNTHESIZE(cocos2d::Sprite*, _bg, Bg);
+    CC_SYNTHESIZE(cocos2d::Sprite*, _cursor, Cursor);
+    
+    cocos2d::Node* getCharacterAnchor(int index) { return _characterAnchors[index]; }
     
     cocos2d::Node* _scene;
     
-    cocos2d::ui::Text* _nameText;
-    cocos2d::ui::Text* _talkText;
-    
-    cocos2d::Sprite* _bg;
     cocos2d::Node* _characterAnchors[3];
-    
-    cocos2d::Sprite* _cursor;
-    
-    NovelScriptEngine _engine;
-    std::string _luaFileName;
-    
-    std::function<void()> _touchHandler;
-    
-    bool _isAuto;
-    bool _waitProgress;    
 };
 
 

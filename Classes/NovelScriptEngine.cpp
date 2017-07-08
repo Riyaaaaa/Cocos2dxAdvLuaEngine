@@ -158,6 +158,19 @@ static int setBG(lua_State *L) {
     return 0;
 }
 
+static int transitScene(lua_State *L) {
+    int transitType = lua_tonumber(L, 1);
+    int bgId = lua_tonumber(L, 2);
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    auto data  = std::make_pair(transitType, bgId);
+    
+    engine->addAction(createAction(ScriptFuncType::Transit, data));
+    return 0;
+}
+
 NovelScriptEngine::NovelScriptEngine() { 
     index = 0;
     

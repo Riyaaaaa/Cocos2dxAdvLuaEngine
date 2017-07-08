@@ -19,6 +19,7 @@ enum class ScriptFuncType {
     SetBg,
     Spawn,
     Sequence,
+    Transit,
     End
 };
 
