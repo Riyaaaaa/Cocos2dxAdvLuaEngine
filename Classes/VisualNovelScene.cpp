@@ -39,13 +39,17 @@ bool VisualNovelScene::init() {
     _bg = _scene->getChildByName<Sprite*>("bg");
     
     _talkText = _scene->getChildByName("TalkWindow")->getChildByName<ui::Text*>("TalkText");
+    _talkText->setString("");
+    
     _nameText = _scene->getChildByName("NameWindow")->getChildByName<ui::Text*>("NameText");
+    _nameText->setString("");
     
     _characterAnchors[0] = _scene->getChildByName("LeftAnchor");
     _characterAnchors[1] = _scene->getChildByName("CenterAnchor");
     _characterAnchors[2] = _scene->getChildByName("RightAnchor");
     
     _cursor = _scene->getChildByName("TalkWindow")->getChildByName<Sprite*>("Cursor");
+    _cursor->setVisible(false);
     
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = [this](Touch* t, Event* e){
@@ -60,7 +64,7 @@ bool VisualNovelScene::init() {
     return true;
 }
 
-void VisualNovelScene::onEnter() {
+void VisualNovelScene::onEnterTransitionDidFinish() {
     Scene::onEnter();
     _eventCallback(ViewEventType::Enter);
 }

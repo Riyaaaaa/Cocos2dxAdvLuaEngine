@@ -22,7 +22,7 @@ public:
     bool init() override;
     
 private:
-    void onEnter() override;
+    void onEnterTransitionDidFinish() override;
     
     CC_SYNTHESIZE(std::function<void(ViewEventType)>, _eventCallback, EventCallBack);
     

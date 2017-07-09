@@ -30,16 +30,24 @@ void NovelViewController::runScene(std::string filename, int transitType)
         return true;
     });
     
-    _scene->setEventCallBack([this, filename](ViewEventType e){
+    _scene->setEventCallBack([this](ViewEventType e){
         switch(e) {
             case ViewEventType::Enter:
-                _engine.run(filename);
                 _engine.progress();
                 break;
         }
     });
     
-    Director::getInstance()->runWithScene(_scene);
+    _scene->retain();
+    
+    auto scene = Scene::create();
+    scene->addChild(LayerColor::create(Color4B::BLACK));
+    scene->setonEnterTransitionDidFinishCallback([this, filename](){
+        _engine.run(filename);
+        _engine.progress();
+    });
+    
+    Director::getInstance()->runWithScene(scene);
 }
 
 NovelViewController::NovelViewController() {
@@ -48,8 +56,6 @@ NovelViewController::NovelViewController() {
     _isAuto = false;
     _waitProgress = false;
     _progressLock = false;
-    
-    Director::getInstance()->runWithScene(Scene::create());
 }
 
 float NovelViewController::getDurationScriptFuncType(ScriptFuncType funcType) {
@@ -158,7 +164,18 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             break;
         }
         case ScriptFuncType::Transit: {
-            auto data = libspiral::any_cast<std::pair<int, int>>(context.second.getContext());
+            // auto data = libspiral::any_cast<std::pair<int, int>>(context.second.getContext());
+            break;
+        }
+        case ScriptFuncType::Run: {
+            auto transitType = libspiral::any_cast<int>(context.second.getContext());
+            
+            switch (transitType) {
+                default:
+                    Director::getInstance()->replaceScene(TransitionFadeTR::create(1.0f, _scene));
+                    break;
+            }
+            _scene->release();
             break;
         }
         default:
@@ -169,6 +186,6 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
 
 void NovelViewController::progress() {
     if (!_progressLock) {
-        _engine.progress();
+        Director::getInstance()->getRunningScene()->runAction(CallFunc::create([this](){ _engine.progress(); }));
     }
 }

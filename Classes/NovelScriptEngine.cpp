@@ -158,6 +158,18 @@ static int setBG(lua_State *L) {
     return 0;
 }
 
+static int runScene(lua_State *L) {
+    int transitType = lua_tonumber(L, 1);
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    auto data  = transitType;
+    
+    engine->addAction(createAction(ScriptFuncType::Run, data));
+    return 0;
+}
+
 static int transitScene(lua_State *L) {
     int transitType = lua_tonumber(L, 1);
     int bgId = lua_tonumber(L, 2);
@@ -197,6 +209,7 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "SeqS", &seqBegan);
     tolua_function(tolua_S, "SeqE", &seqEnd);
     tolua_function(tolua_S, "_BG", &setBG);
+    tolua_function(tolua_S, "Run", &runScene);
     
     tolua_endmodule(tolua_S);
     

@@ -11,6 +11,7 @@
 
 enum class ScriptFuncType {
     Start,
+    Run,
     Text,
     SetName,
     PlaceCharacter,
