@@ -9,8 +9,8 @@
 #ifndef VisualNovelScene_h
 #define VisualNovelScene_h
 
-#include "NovelScriptEngine.h"
-#include "View/ViewEventType.h"
+#include "../Model/NovelScriptEngine.h"
+#include "../View/ViewEventType.h"
 
 #include "ui/CocosGUI.h"
 

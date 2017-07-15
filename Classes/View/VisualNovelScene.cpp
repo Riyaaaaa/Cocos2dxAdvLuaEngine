@@ -8,12 +8,12 @@
 
 #include "VisualNovelScene.h"
 
-#include "NovelScriptContexts/NovelScriptContext.h"
+#include "../NovelScriptContexts/NovelScriptContext.h"
 #include "ui/CocosGUI.h"
 #include "cocostudio/CocoStudio.h"
 
-#include "Utility/NovelTextUtils.h"
-#include "Utility/SpriteUtils.h"
+#include "../Utility/NovelTextUtils.h"
+#include "../Utility/SpriteUtils.h"
 
 using namespace cocos2d;
 

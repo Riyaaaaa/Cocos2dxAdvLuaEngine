@@ -10,7 +10,7 @@
 #define NovelModelManager_h
 
 #include "../SpiralLibrary/GameSystem/SingletonBase.hpp"
-#include "NovelViewController.h"
+#include "../Controller/NovelViewController.h"
 
 class NovelModelManager : public libspiral::SingletonBase<NovelModelManager> {
 public:

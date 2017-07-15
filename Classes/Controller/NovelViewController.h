@@ -9,8 +9,8 @@
 #ifndef NovelViewController_h
 #define NovelViewController_h
 
-#include "VisualNovelScene.h"
-#include "ScriptFuncType.h"
+#include "../View/VisualNovelScene.h"
+#include "../NovelScriptContexts/ScriptFuncType.h"
 
 class NovelViewController {
 public:

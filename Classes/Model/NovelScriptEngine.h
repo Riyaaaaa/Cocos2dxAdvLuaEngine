@@ -11,8 +11,8 @@
 
 #include <functional>
 
-#include "NovelScriptContexts/NovelScriptContext.h"
-#include "NovelScriptContexts/ScriptFuncType.h"
+#include "../NovelScriptContexts/NovelScriptContext.h"
+#include "../NovelScriptContexts/ScriptFuncType.h"
 
 #include "CCLuaEngine.h"
 #include "lua_module_register.h"
