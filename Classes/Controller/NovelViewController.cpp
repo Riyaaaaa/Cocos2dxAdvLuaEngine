@@ -8,8 +8,8 @@
 
 #include "NovelViewController.h"
 
-#include "Utility/NovelTextUtils.h"
-#include "Utility/SpriteUtils.h"
+#include "../Utility/NovelTextUtils.h"
+#include "../Utility/SpriteUtils.h"
 
 USING_NS_CC;
 
