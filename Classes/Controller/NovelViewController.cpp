@@ -10,8 +10,11 @@
 
 #include "../Utility/NovelTextUtils.h"
 #include "../Utility/SpriteUtils.h"
+#include "../View/CharacterStandView.h"
 
 USING_NS_CC;
+
+constexpr const char* CHARACTER_TAG_PREFIX = "Characeter";
 
 void NovelViewController::runScene(std::string filename, int transitType)
 {
@@ -112,14 +115,36 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             CharacterContext data = libspiral::any_cast<CharacterContext>(context.second.getContext());
             
             auto string = StringUtils::format("Characters/%02d/%02d_%02d.png", data.characterId, data.pictureId, data.faceId);
-            auto sprite = Sprite::create(string);
+            auto sprite = CharacterStandView::create(string);
+            sprite->setName(std::string(CHARACTER_TAG_PREFIX) + std::to_string(data.characterId));
             _scene->getBg()->addChild(sprite);
+            sprite->setContext(data);
             
             sprite->setPosition(_scene->getCharacterAnchor(data.position)->getPosition());
             sprite->setScale(0.7f);
             
             SpriteUtils::fadeIn(sprite, getDurationScriptFuncType(context.first),
                                 [this](){ progress(); });
+            
+            break;
+        }
+        case ScriptFuncType::ReplaceFace: {
+            CharacterContext data = libspiral::any_cast<CharacterContext>(context.second.getContext());
+            
+            auto sprite = _scene->getBg()->getChildByName(std::string(CHARACTER_TAG_PREFIX) + std::to_string(data.characterId));
+            if (sprite) {
+                auto standView = dynamic_cast<CharacterStandView*>(sprite);
+                auto attachedContext = standView->getContext();
+                auto filename = StringUtils::format("Characters/%02d/%02d_%02d.png",
+                                                    attachedContext.characterId,
+                                                    attachedContext.pictureId,
+                                                    attachedContext.faceId);
+                standView->setTexture(filename);
+            } else {
+                CCLOG("Not found stand view. characterId = %d", data.characterId);
+            }
+            
+            progress();
             
             break;
         }

@@ -30,8 +30,9 @@ private:
     std::function<void()> _touchHandler;
     
     NovelScriptEngine _engine;
-    
     VisualNovelScene* _scene;
+    
+    CharacterContext _placedCharacters[3];
     
     std::string _luaFileName;
     
