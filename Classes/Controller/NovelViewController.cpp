@@ -204,6 +204,7 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             break;
         }
         default:
+            CCLOG("Unsupported instruction called.");
             progress();
             break;
     }
