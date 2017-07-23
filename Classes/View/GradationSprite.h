@@ -18,7 +18,7 @@ public:
     virtual ~GradationSprite();
     
     void addChild(cocos2d::Node* parent) override;
-    void setTexture(std::string filename);
+    void setTexture(std::string filename, std::function<void()> callback = nullptr);
     
 private:
     cocos2d::Sprite* _previousSprite;
