@@ -22,31 +22,20 @@ GradationSprite* GradationSprite::create(std::string filename) {
     return nullptr;
 }
 
-GradationSprite::~GradationSprite() {
-    if (_previousSprite) {
-        _previousSprite->release();
-    }
-}
-
 bool GradationSprite::init(std::string filename) {
     if (!Sprite::initWithFile(filename)) {
         return false;
     }
     
     _previousSprite = Sprite::create(filename);
-    _previousSprite->retain();
+    _previousSprite->setAnchorPoint(Vec2::ZERO);
+    addChild(_previousSprite);
+    _previousSprite->setVisible(false);
     
     return true;
 }
 
-void GradationSprite::addChild(cocos2d::Node* parent) {
-    Sprite::addChild(parent);
-    _previousSprite->addChild(parent);
-    _previousSprite->setVisible(false);
-}
-
 void GradationSprite::setTexture(std::string filename, std::function<void()> callback) {
-    _previousSprite->setPosition(getPosition());
     _previousSprite->setVisible(true);
     this->setOpacity(0);
     Sprite::setTexture(filename);
