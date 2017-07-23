@@ -83,6 +83,22 @@ static int replaceFace(lua_State *L) {
     return 0;
 }
 
+static int removeCharacter(lua_State *L) {
+    int charaId = lua_tonumber(L, 1);
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    CharacterContext data;
+    data.characterId = charaId;
+    data.pictureId = -1;
+    data.faceId = -1;
+    
+    engine->addAction(createAction(ScriptFuncType::RemoveCharacter, data));
+    
+    return 0;
+}
+
 static int sleep(lua_State *L) {
     float mtime = lua_tonumber(L, 1);
     
@@ -204,6 +220,7 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "_C", &placeCharacter);
     tolua_function(tolua_S, "_R", &replaceFace);
     tolua_function(tolua_S, "_S", &sleep);
+    tolua_function(tolua_S, "RemoveC", &removeCharacter);
     tolua_function(tolua_S, "SpawnS", &spawnBegan);
     tolua_function(tolua_S, "SpawnE", &spawnEnd);
     tolua_function(tolua_S, "SeqS", &seqBegan);

@@ -138,16 +138,34 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
                 auto filename = StringUtils::format("Characters/%02d/%02d_%02d.png",
                                                     attachedContext.characterId,
                                                     attachedContext.pictureId,
-                                                    attachedContext.faceId);
-                standView->setTexture(filename);
+                                                    data.faceId);
+                standView->setTexture(filename, [this](){
+                    this->progress();
+                });
             } else {
                 CCLOG("Not found stand view. characterId = %d", data.characterId);
+                progress();
             }
-            
-            progress();
             
             break;
         }
+        case ScriptFuncType::RemoveCharacter: {
+            auto data = libspiral::any_cast<CharacterContext>(context.second.getContext());
+            
+            auto sprite = _scene->getBg()->getChildByName(std::string(CHARACTER_TAG_PREFIX) + std::to_string(data.characterId));
+            if (sprite) {
+                auto standView = dynamic_cast<CharacterStandView*>(sprite);
+                standView->runAction(Sequence::create(FadeTo::create(0.5f, 0),
+                                                      CallFunc::create([this](){ progress(); }),
+                                                      RemoveSelf::create(),
+                                                      nullptr));
+            } else {
+                CCLOG("Not found stand view. characterId = %d", data.characterId);
+                progress();
+            }
+
+        }
+            break;
         case ScriptFuncType::End:
             break;
         case ScriptFuncType::Sleep: {

@@ -16,6 +16,7 @@ enum class ScriptFuncType {
     SetName,
     PlaceCharacter,
     ReplaceFace,
+    RemoveCharacter,
     Sleep,
     SetBg,
     Spawn,
