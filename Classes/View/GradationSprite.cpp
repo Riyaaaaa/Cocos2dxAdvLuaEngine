@@ -37,13 +37,14 @@ bool GradationSprite::init(std::string filename) {
 
 void GradationSprite::setTexture(std::string filename, std::function<void()> callback) {
     _previousSprite->setVisible(true);
-    this->setOpacity(0);
+    //this->setOpacity(0);
     Sprite::setTexture(filename);
     
     this->runAction(FadeTo::create(0.5f, 255));
     _previousSprite->runAction(Sequence::create(FadeTo::create(0.5f, 0),
                                                 CallFunc::create([this, filename, callback](){
         _previousSprite->setVisible(false);
+        _previousSprite->setOpacity(255);
         _previousSprite->setTexture(filename);
         if (callback) {
             callback();
