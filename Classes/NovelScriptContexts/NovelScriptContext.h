@@ -55,7 +55,7 @@ struct MoveContext {
 };
 
 struct ScaleContext {
-    int x, y;
+    float x, y;
     float duration;
 };
 

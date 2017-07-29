@@ -216,9 +216,9 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
         case ScriptFuncType::Target: {
             auto data = libspiral::any_cast<TargetContext>(context.second.getContext());
             
-            if (target) {
-                target->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            }
+//            if (target) {
+//                target->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+//            }
             
             switch (data.targetType) {
             case ccnovel::TargetType::BG:
@@ -227,6 +227,8 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             case ccnovel::TargetType::Character:
                 target = _scene->getBg()->getChildByName(std::string(CHARACTER_TAG_PREFIX) + std::to_string(data.id));
                 break;
+            case ccnovel::TargetType::Text:
+                    target = _scene->getTalkText();
             }
             
             Vec2 delta = Vec2(target->getAnchorPoint().x - data.anchorX,

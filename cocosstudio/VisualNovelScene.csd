@@ -17,7 +17,7 @@
             <FileData Type="Normal" Path="bg.png" Plist="" />
             <BlendFunc Src="770" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="TalkWindow" ActionTag="652424870" Tag="4" IconVisible="False" LeftMargin="30.8075" RightMargin="205.1925" TopMargin="461.9067" BottomMargin="18.0933" TouchEnable="True" ClipAble="False" BackColorAlpha="102" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
+          <AbstractNodeData Name="TalkWindow" ActionTag="652424870" Tag="4" IconVisible="False" LeftMargin="30.8075" RightMargin="205.1925" TopMargin="461.9067" BottomMargin="18.0933" TouchEnable="True" ClipAble="False" BackColorAlpha="187" ComboBoxIndex="1" ColorAngle="90.0000" Scale9Width="1" Scale9Height="1" ctype="PanelObjectData">
             <Size X="900.0000" Y="160.0000" />
             <Children>
               <AbstractNodeData Name="TalkText" ActionTag="-713384578" Tag="14" IconVisible="False" LeftMargin="16.1661" RightMargin="782.8339" TopMargin="35.2551" BottomMargin="102.7449" FontSize="20" LabelText="Text Label" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="TextObjectData">
@@ -50,7 +50,7 @@
             <CColor A="255" R="255" G="255" B="255" />
             <PrePosition X="0.0271" Y="0.0283" />
             <PreSize X="0.7923" Y="0.2500" />
-            <SingleColor A="255" R="150" G="200" B="255" />
+            <SingleColor A="255" R="26" G="51" B="80" />
             <FirstColor A="255" R="150" G="200" B="255" />
             <EndColor A="255" R="255" G="255" B="255" />
             <ColorVector ScaleY="1.0000" />

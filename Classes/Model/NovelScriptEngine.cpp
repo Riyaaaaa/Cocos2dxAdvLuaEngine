@@ -256,8 +256,8 @@ static int ScaleTo(lua_State *L) {
     int duration = lua_tonumber(L, 3);
     
     ScaleContext data;
-    data.x = x;
-    data.y = y;
+    data.x = x / 100.0f;
+    data.y = y / 100.0f;
     data.duration = duration;
     
     lua_getglobal(L, "_instance");
@@ -273,8 +273,8 @@ static int ScaleBy(lua_State *L) {
     int duration = lua_tonumber(L, 3);
     
     ScaleContext data;
-    data.x = x;
-    data.y = y;
+    data.x = x / 100.0f;
+    data.y = y / 100.0f;
     data.duration = duration;
     
     lua_getglobal(L, "_instance");

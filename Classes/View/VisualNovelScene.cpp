@@ -65,7 +65,7 @@ bool VisualNovelScene::init() {
 }
 
 void VisualNovelScene::onEnterTransitionDidFinish() {
-    Scene::onEnter();
-    _eventCallback(ViewEventType::Enter);
+    Scene::onEnterTransitionDidFinish();
+    this->runAction(CallFunc::create([this](){ _eventCallback(ViewEventType::Enter); }));
 }
 

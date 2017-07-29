@@ -10,5 +10,5 @@
 
 void NovelModelManager::runScene() {
     _controller = std::make_shared<NovelViewController>();
-    _controller->runScene("test.lua");
+    _controller->runScene("ukano.lua");
 }

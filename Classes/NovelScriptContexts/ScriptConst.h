@@ -17,7 +17,8 @@ namespace ccnovel {
     
     enum TargetType {
         BG = 0,
-        Character = 1
+        Character = 1,
+        Text = 2
     };
 }
 
