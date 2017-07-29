@@ -229,28 +229,39 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
                 break;
             }
             
+            Vec2 delta = Vec2(target->getAnchorPoint().x - data.anchorX,
+                              target->getAnchorPoint().y - data.anchorY);
+            
             target->setAnchorPoint(Vec2(data.anchorX, data.anchorY));
+            target->setPositionX(target->getPosition().x - target->getContentSize().width * delta.x);
+            target->setPositionY(target->getPosition().y - target->getContentSize().height * delta.y);
+            
             progress();
+            break;
         }
         case ScriptFuncType::MoveTo: {
             auto data = libspiral::any_cast<MoveContext>(context.second.getContext());
             
             ActionUtils::runActionSeq(target, [this](){ progress(); }, MoveTo::create(data.duration / 1000.0f, Vec2(data.x, data.y)));
+            break;
         }
         case ScriptFuncType::MoveBy: {
             auto data = libspiral::any_cast<MoveContext>(context.second.getContext());
             
             ActionUtils::runActionSeq(target, [this](){ progress(); }, MoveBy::create(data.duration / 1000.0f, Vec2(data.x, data.y)));
+            break;
         }
         case ScriptFuncType::ScaleTo: {
             auto data = libspiral::any_cast<ScaleContext>(context.second.getContext());
             
             ActionUtils::runActionSeq(target, [this](){ progress(); }, ScaleTo::create(data.duration / 1000.0f, data.x, data.y));
+            break;
         }
         case ScriptFuncType::ScaleBy: {
             auto data = libspiral::any_cast<ScaleContext>(context.second.getContext());
             
             ActionUtils::runActionSeq(target, [this](){ progress(); }, ScaleBy::create(data.duration / 1000.0f, data.x, data.y));
+            break;
         }
         case ScriptFuncType::Run: {
             auto transitType = libspiral::any_cast<int>(context.second.getContext());

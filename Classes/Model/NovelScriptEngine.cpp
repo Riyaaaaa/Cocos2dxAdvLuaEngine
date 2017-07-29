@@ -255,7 +255,7 @@ static int ScaleTo(lua_State *L) {
     int y = lua_tonumber(L, 2);
     int duration = lua_tonumber(L, 3);
     
-    MoveContext data;
+    ScaleContext data;
     data.x = x;
     data.y = y;
     data.duration = duration;
@@ -272,7 +272,7 @@ static int ScaleBy(lua_State *L) {
     int y = lua_tonumber(L, 2);
     int duration = lua_tonumber(L, 3);
     
-    MoveContext data;
+    ScaleContext data;
     data.x = x;
     data.y = y;
     data.duration = duration;
