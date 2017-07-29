@@ -8,6 +8,7 @@
 
 #include "NovelViewController.h"
 
+#include "../NovelScriptContexts/ScriptConst.h"
 #include "../Utility/NovelTextUtils.h"
 #include "../Utility/SpriteUtils.h"
 #include "../View/CharacterStandView.h"
@@ -59,6 +60,7 @@ NovelViewController::NovelViewController() {
     _isAuto = false;
     _waitProgress = false;
     _progressLock = false;
+    target = nullptr;
 }
 
 float NovelViewController::getDurationScriptFuncType(ScriptFuncType funcType) {
@@ -209,6 +211,24 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
         case ScriptFuncType::Transit: {
             // auto data = libspiral::any_cast<std::pair<int, int>>(context.second.getContext());
             break;
+        }
+        case ScriptFuncType::Target: {
+            auto data = libspiral::any_cast<TargetContext>(context.second.getContext());
+            
+            if (target) {
+                target->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            }
+            
+            switch (data.targetType) {
+            case ccnovel::TargetType::BG:
+                target = _scene->getBg();
+                break;
+            case ccnovel::TargetType::Character:
+                target = _scene->getBg()->getChildByName(std::string(CHARACTER_TAG_PREFIX) + std::to_string(data.id));
+                break;
+            }
+            
+            target->setAnchorPoint(Vec2(data.anchorX, data.anchorY));
         }
         case ScriptFuncType::Run: {
             auto transitType = libspiral::any_cast<int>(context.second.getContext());

@@ -9,10 +9,16 @@
 #ifndef ScriptConst_h
 #define ScriptConst_h
 
-enum class CharacterPosition {
-    LEFT = 0,
-    RIGHT
+namespace ccnovel {
+    enum class CharacterPosition {
+        LEFT = 0,
+        RIGHT
+    };
+    
+    enum TargetType {
+        BG = 0,
+        Character = 1
+    };
 }
-
 
 #endif /* ScriptConst_h */

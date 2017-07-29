@@ -42,4 +42,11 @@ struct ActionSetContext {
     ActionSet set;
 };
 
+struct TargetContext {
+    int targetType;
+    int id;
+    float anchorX;
+    float anchorY;
+};
+
 #endif /* NovelScriptContext_h */

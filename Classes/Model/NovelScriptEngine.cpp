@@ -199,6 +199,25 @@ static int transitScene(lua_State *L) {
     return 0;
 }
 
+static int setTarget(lua_State *L) {
+    int targetType = lua_tonumber(L, 1);
+    int id = lua_tonumber(L, 2);
+    float anchorX = lua_tonumber(L, 3) / 100.0f;
+    float anchorY = lua_tonumber(L, 4) / 100.0f;
+    
+    TargetContext data;
+    data.targetType = targetType;
+    data.id = id;
+    data.anchorX = anchorX;
+    data.anchorY = anchorY;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::Target, data));
+    return 0;
+}
+
 NovelScriptEngine::NovelScriptEngine() { 
     index = 0;
     
@@ -227,6 +246,7 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "SeqE", &seqEnd);
     tolua_function(tolua_S, "_BG", &setBG);
     tolua_function(tolua_S, "Run", &runScene);
+    tolua_function(tolua_S, "Target", &setTarget);
     
     tolua_endmodule(tolua_S);
     

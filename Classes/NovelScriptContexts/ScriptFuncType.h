@@ -22,6 +22,7 @@ enum class ScriptFuncType {
     Spawn,
     Sequence,
     Transit,
+    Target,
     End
 };
 

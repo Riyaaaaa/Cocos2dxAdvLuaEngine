@@ -32,6 +32,8 @@ private:
     NovelScriptEngine _engine;
     VisualNovelScene* _scene;
     
+    cocos2d::Node* target;
+    
     CharacterContext _placedCharacters[3];
     
     std::string _luaFileName;
