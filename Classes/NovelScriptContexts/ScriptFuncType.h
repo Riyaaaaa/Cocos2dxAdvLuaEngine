@@ -23,6 +23,10 @@ enum class ScriptFuncType {
     Sequence,
     Transit,
     Target,
+    MoveBy,
+    MoveTo,
+    ScaleBy,
+    ScaleTo,
     End
 };
 

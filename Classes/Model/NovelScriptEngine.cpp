@@ -218,7 +218,39 @@ static int setTarget(lua_State *L) {
     return 0;
 }
 
-NovelScriptEngine::NovelScriptEngine() { 
+static int MoveTo(lua_State *L) {
+    int x = lua_tonumber(L, 1);
+    int y = lua_tonumber(L, 2);
+    
+    MoveContext data;
+    data.x = x;
+    data.y = y;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::MoveTo, data));
+    return 0;
+}
+
+static int MoveBy(lua_State *L) {
+    int x = lua_tonumber(L, 1);
+    int y = lua_tonumber(L, 2);
+    int duration = lua_tonumber(L, 3);
+    
+    MoveContext data;
+    data.x = x;
+    data.y = y;
+    data.duration;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::MoveBy, data));
+    return 0;
+}
+
+NovelScriptEngine::NovelScriptEngine() {
     index = 0;
     
     _routeActionSet.push_back(std::make_pair(ScriptFuncType::Start, NovelScriptContext{}));

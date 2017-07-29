@@ -11,6 +11,7 @@
 #include "../NovelScriptContexts/ScriptConst.h"
 #include "../Utility/NovelTextUtils.h"
 #include "../Utility/SpriteUtils.h"
+#include "../Utility/ActionUtils.h"
 #include "../View/CharacterStandView.h"
 
 USING_NS_CC;
@@ -229,6 +230,18 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             }
             
             target->setAnchorPoint(Vec2(data.anchorX, data.anchorY));
+            progress();
+        }
+            
+        case ScriptFuncType::MoveTo: {
+            auto data = libspiral::any_cast<MoveContext>(context.second.getContext());
+            
+            ActionUtils::runActionSeq(target, [this](){ progress(); }, MoveTo::create(data.duration, Vec2(data.x, data.y)));
+        }
+        case ScriptFuncType::MoveBy: {
+            auto data = libspiral::any_cast<MoveContext>(context.second.getContext());
+            
+            ActionUtils::runActionSeq(target, [this](){ progress(); }, MoveBy::create(data.duration, Vec2(data.x, data.y)));
         }
         case ScriptFuncType::Run: {
             auto transitType = libspiral::any_cast<int>(context.second.getContext());

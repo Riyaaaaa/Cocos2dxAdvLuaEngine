@@ -49,4 +49,9 @@ struct TargetContext {
     float anchorY;
 };
 
+struct MoveContext {
+    int x, y;
+    float duration;
+};
+
 #endif /* NovelScriptContext_h */
