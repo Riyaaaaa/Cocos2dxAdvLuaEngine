@@ -10,8 +10,6 @@
 
 #include "LuaUtils.h"
 
-USING_NS_CC;
-
 template<class T>
 static std::pair<ScriptFuncType, NovelScriptContext> createAction(ScriptFuncType t, const T& data) {
     NovelScriptContext context;
@@ -221,10 +219,12 @@ static int setTarget(lua_State *L) {
 static int MoveTo(lua_State *L) {
     int x = lua_tonumber(L, 1);
     int y = lua_tonumber(L, 2);
+    int duration = lua_tonumber(L, 3);
     
     MoveContext data;
     data.x = x;
     data.y = y;
+    data.duration = duration;
     
     lua_getglobal(L, "_instance");
     NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
@@ -241,12 +241,46 @@ static int MoveBy(lua_State *L) {
     MoveContext data;
     data.x = x;
     data.y = y;
-    data.duration;
+    data.duration = duration;
     
     lua_getglobal(L, "_instance");
     NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
     
     engine->addAction(createAction(ScriptFuncType::MoveBy, data));
+    return 0;
+}
+
+static int ScaleTo(lua_State *L) {
+    int x = lua_tonumber(L, 1);
+    int y = lua_tonumber(L, 2);
+    int duration = lua_tonumber(L, 3);
+    
+    MoveContext data;
+    data.x = x;
+    data.y = y;
+    data.duration = duration;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::ScaleTo, data));
+    return 0;
+}
+
+static int ScaleBy(lua_State *L) {
+    int x = lua_tonumber(L, 1);
+    int y = lua_tonumber(L, 2);
+    int duration = lua_tonumber(L, 3);
+    
+    MoveContext data;
+    data.x = x;
+    data.y = y;
+    data.duration = duration;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::ScaleBy, data));
     return 0;
 }
 
@@ -257,8 +291,8 @@ NovelScriptEngine::NovelScriptEngine() {
     _currentActionSet = &_routeActionSet;
     _parentActionSet = nullptr; // route
     
-    _engine = LuaEngine::getInstance();
-    ScriptEngineManager::getInstance()->setScriptEngine(_engine);
+    _engine = cocos2d::LuaEngine::getInstance();
+    cocos2d::ScriptEngineManager::getInstance()->setScriptEngine(_engine);
     auto* tolua_S = _engine->getLuaStack()->getLuaState();
     
     tolua_open(tolua_S);
@@ -279,6 +313,10 @@ NovelScriptEngine::NovelScriptEngine() {
     tolua_function(tolua_S, "_BG", &setBG);
     tolua_function(tolua_S, "Run", &runScene);
     tolua_function(tolua_S, "Target", &setTarget);
+    tolua_function(tolua_S, "MoveTo", &MoveTo);
+    tolua_function(tolua_S, "MoveBy", &MoveBy);
+    tolua_function(tolua_S, "ScaleTo", &ScaleTo);
+    tolua_function(tolua_S, "ScaleBy", &ScaleBy);
     
     tolua_endmodule(tolua_S);
     

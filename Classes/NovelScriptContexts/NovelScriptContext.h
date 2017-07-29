@@ -54,4 +54,9 @@ struct MoveContext {
     float duration;
 };
 
+struct ScaleContext {
+    int x, y;
+    float duration;
+};
+
 #endif /* NovelScriptContext_h */
