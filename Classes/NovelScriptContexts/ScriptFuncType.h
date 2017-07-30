@@ -27,6 +27,8 @@ enum class ScriptFuncType {
     MoveTo,
     ScaleBy,
     ScaleTo,
+    RotateTo,
+    RotateBy,
     End
 };
 

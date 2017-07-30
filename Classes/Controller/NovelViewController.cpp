@@ -265,6 +265,18 @@ void NovelViewController::scriptHandler(std::pair<ScriptFuncType, NovelScriptCon
             ActionUtils::runActionSeq(target, [this](){ progress(); }, ScaleBy::create(data.duration / 1000.0f, data.x, data.y));
             break;
         }
+        case ScriptFuncType::RotateTo: {
+            auto data = libspiral::any_cast<RotateContext>(context.second.getContext());
+            
+            ActionUtils::runActionSeq(target, [this](){ progress(); }, RotateTo::create(data.duration / 1000.0f, data.angle));
+            break;
+        }
+        case ScriptFuncType::RotateBy: {
+            auto data = libspiral::any_cast<RotateContext>(context.second.getContext());
+            
+            ActionUtils::runActionSeq(target, [this](){ progress(); }, RotateBy::create(data.duration / 1000.0f, data.angle));
+            break;
+        }
         case ScriptFuncType::Run: {
             auto transitType = libspiral::any_cast<int>(context.second.getContext());
             

@@ -59,4 +59,9 @@ struct ScaleContext {
     float duration;
 };
 
+struct RotateContext {
+    int angle;
+    float duration;
+};
+
 #endif /* NovelScriptContext_h */

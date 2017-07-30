@@ -284,6 +284,36 @@ static int ScaleBy(lua_State *L) {
     return 0;
 }
 
+static int RotateTo(lua_State *L) {
+    int angle = lua_tonumber(L, 1);
+    int duration = lua_tonumber(L, 2);
+    
+    RotateContext data;
+    data.angle = angle / 100.0f;
+    data.duration = duration;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::RotateTo, data));
+    return 0;
+}
+
+static int RotateBy(lua_State *L) {
+    int angle = lua_tonumber(L, 1);
+    int duration = lua_tonumber(L, 2);
+    
+    RotateContext data;
+    data.angle = angle / 100.0f;
+    data.duration = duration;
+    
+    lua_getglobal(L, "_instance");
+    NovelScriptEngine *engine = reinterpret_cast<NovelScriptEngine*>(lua_touserdata(L, lua_gettop(L)));
+    
+    engine->addAction(createAction(ScriptFuncType::RotateBy, data));
+    return 0;
+}
+
 NovelScriptEngine::NovelScriptEngine() {
     index = 0;
     
